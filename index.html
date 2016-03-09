@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/style.css" type="text/css" />
+        <link rel="stylesheet" href="css/font-awesome-4.5.0/css/font-awesome.min.css">
+        <title>Sample</title>
+    </head>
+    <body>
+        <div class="mainContainer"></div>
+        <div id="outputElm"></div>
+    </body>
+    <script type="text/javascript" src="js/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.imagePointer.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var currCord = getCoord();
+            $(".mainContainer").imagePointer({
+                pointerArray    : currCord,
+                pointerCallBack : function(pointerInfo){
+                    $('#outputElm').html(JSON.stringify(pointerInfo));
+                    currCord = getCoord();
+                    currCord.push(pointerInfo);
+                    document.cookie="coord=" + JSON.stringify(currCord);
+                }
+            });
+        });
+        function getCoord(){
+            var currCord = getCookie("coord");
+            if(currCord === ""){
+                currCord = [];
+            }else{
+                currCord = JSON.parse(currCord);
+            }
+            return currCord;
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+            }
+            return "";
+        }
+    </script>
+</html>

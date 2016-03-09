@@ -1,0 +1,26 @@
+/* 
+    Document   : style
+    Created on : Mar 8, 2016, 11:37:59 AM
+    Author     : Venu V
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.mainContainer{
+    width : 600px;
+    height: 550px;
+    border: 1px black solid;
+    background-image: url("../images/map.png");
+    margin: 50px;
+}
+.pointerElm{
+    position: absolute;
+    z-index: 100;
+    width : 30px;
+    height: 46px;
+}
