@@ -1,20 +1,25 @@
 (function($) {
    $.fn.imagePointer = function(options){
        var elmObj = $(this); 
-       var imgpointer = new $.imagePointerClass(elmObj, options);
-       imgpointer.init();
+       var imgPointer = new $.imagePointerClass(elmObj, options);
+       imgPointer.init();
        elmObj.mousemove(function(evnt){
-           imgpointer.manageMouseMove(evnt);
+           imgPointer.manageMouseMove(evnt);
        });
-       elmObj.click(function(){
-           imgpointer.fixPointer();
+       elmObj.mouseup(function(){
+           imgPointer.manageMouseUp();
        });
-       if(imgpointer.options.destroyMouseOut){
-           elmObj.mouseleave(function(){
-               imgpointer.removeMOverObj();
+       if(imgPointer.options.areaSelection){
+           elmObj.mousedown(function(){
+               imgPointer.stopDragging();
            });
        }
-       return imgpointer;
+       if(imgPointer.options.destroyMouseOut){
+           elmObj.mouseleave(function(){
+               imgPointer.removeMOverObj();
+           });
+       }
+       return imgPointer;
    }
    $.imagePointerClass = function(elmObj, options){
        var thisObj = this;
@@ -29,13 +34,15 @@
            "strictBorder"       : false,
            "disable"            : false,
            "destroyMouseOut"    : true,
+           "areaSelection"      : false,
            "pointerArray"       : [{'top' : 100, 'left' : 200}],
            "pointerCallBack"    : function(pointerInfo){}
        };
-       thisObj.options  = $.extend(defaultOptions, options);
-       thisObj.mElement = false;
-       thisObj.elmObj   = elmObj;
-       thisObj.mOffSet  = {"left" : 0, "top" : 0};
+       thisObj.options      = $.extend(defaultOptions, options);
+       thisObj.mElement     = false;
+       thisObj.isDragging   = true;
+       thisObj.elmObj       = elmObj;
+       thisObj.mOffSet      = {"left" : 0, "top" : 0};
        thisObj.init = function(){
            thisObj.isFixed  = thisObj.options.disable; 
            if(!thisObj.isFixed){
@@ -50,6 +57,22 @@
                thisObj.drawPointers(thisObj.options.pointerArray);
            }
            return true;
+       };
+       thisObj.stopDragging = function(){
+           thisObj.isDragging = false;
+       };
+       thisObj.startDragging = function(){
+           thisObj.isDragging = true;
+       };
+       thisObj.manageMouseUp = function(){
+           if(thisObj.options.areaSelection){
+               thisObj.startDragging();
+           }else{
+               thisObj.fixPointer();
+           }
+       };
+       thisObj.dragSelection = function(){
+           
        };
        thisObj.manageMouseMove = function(evnt){
            if(thisObj.isFixed){
@@ -77,6 +100,9 @@
            if(thisObj.checkInRange(thisObj.mXPos, thisObj.mYPos)){
                 thisObj.placePointer(thisObj.mElement, {'top' : (thisObj.mYPos - thisObj.mOffSet.top), 'left' : (thisObj.mXPos - thisObj.mOffSet.left)});
            }
+           if(thisObj.options.areaSelection){
+               thisObj.dragSelection();
+           }
            return true;
        };
        thisObj.checkInRange = function(mXPos, mYPos){
@@ -93,6 +119,7 @@
            }
            thisObj.mElement.remove();
            thisObj.mElement = false;
+           return true;
        };
        thisObj.fixPointer = function(){
            if(!thisObj.checkInRange(thisObj.mXPos, thisObj.mYPos)){
