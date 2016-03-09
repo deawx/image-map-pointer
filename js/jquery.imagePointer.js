@@ -72,6 +72,11 @@
            }
        };
        thisObj.dragSelection = function(){
+           if(!thisObj.dElement){
+               thisObj.createDragElement();
+           }
+       };
+       thisObj.createDragElement = function(){
            
        };
        thisObj.manageMouseMove = function(evnt){
