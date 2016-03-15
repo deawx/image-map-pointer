@@ -27,3 +27,10 @@
 .CCImgPointer{
     color : royalblue;
 }
+.CCDragElement{
+    background-color: #ccc;
+    border: 1px solid black;
+    opacity: 0.2;
+    position: absolute;
+    z-index: 99;
+}
