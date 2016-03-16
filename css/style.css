@@ -16,7 +16,7 @@
     height: 550px;
     border: 1px black solid;
     background-image: url("../images/map.png");
-    margin: 50px;
+    margin: 100px;
 }
 .pointerElm{
     position: absolute;

@@ -64,6 +64,7 @@
                thisObj.removeMOverObj();
            }
            thisObj.removeSelectionObj();
+           return true;
        };
        thisObj.stopDragging = function(){
            thisObj.isDragging = false;
@@ -142,6 +143,7 @@
        thisObj.createDragElement = function(){
            var drawData = thisObj.createElement(thisObj.dElementHTML, false);
            thisObj.dElement = drawData.elmObj;
+           return true;
        };
        thisObj.manageMouseMove = function(evnt){
            if(thisObj.isFixed){
@@ -252,6 +254,7 @@
                 'left' : (posData.left) + 'px', 
                 'top' :  (posData.top) + 'px'
             });
+            return true;
        };
        thisObj.createFixedElement = function(){
            if((!thisObj.mElement) || (thisObj.mElement.length === 0)){
@@ -300,6 +303,7 @@
                    drawData.elmObj.css(selectionAttr);
                }
             }
+            return true;
        };
    };
 })(jQuery);
